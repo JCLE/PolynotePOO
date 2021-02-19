@@ -22,7 +22,7 @@ class BackendController
     /**
      * HOME PAGE need to be logged to access
      */
-    function getPageHomeLogged($alert_message = '', $alert_type = 0)
+    function getPageHomeLogged($alert_msg = '', $alert_type = 0)
     {
         if(isset($_SESSION['user']) && !empty($_SESSION['user']))
         {
@@ -40,7 +40,7 @@ class BackendController
     /**
      * LOGIN PAGE
      */
-    function getPageLogin($alert_message = "", $alert_type = 0)
+    function getPageLogin($alert_msg = "", $alert_type = 0)
     {
 
         $menu_state = MENU_STATE_INITIAL;
@@ -75,10 +75,10 @@ class BackendController
                 header ("Location: home");
             } else 
             {
-                $alert_message = "Mot de passe invalide";
+                $alert_msg = "Mot de passe invalide";
                 $alert_type= ALERT_DANGER;
                 
-                $_SESSION['alert_message'] = $alert_message;
+                $_SESSION['alert_msg'] = $alert_msg;
                 $_SESSION['alert_type'] = $alert_type;
             }
         }
@@ -90,7 +90,7 @@ class BackendController
         // session_destroy();
         unset($_SESSION['user']);
         // unset($_SESSION['alert']);
-        // $alert_message = "Deco réussie";
+        // $alert_msg = "Deco réussie";
         // $alert_type = ALERT_DANGER;
         // echo Alert::getAlert();
         // return;
@@ -99,19 +99,19 @@ class BackendController
 
     function getInitAlert()
     {
-        $alert_message = '';
+        $alert_msg = '';
         $alert_type = 0;
-        if(isset($_SESSION['alert_message']) && !empty($_SESSION['alert_message']))
+        if(isset($_SESSION['alert_msg']) && !empty($_SESSION['alert_msg']))
         {
-            $alert_message = Security::secureHTML($_SESSION['alert_message']);
-            unset($_SESSION['alert_message']);
+            $alert_msg = Security::secureHTML($_SESSION['alert_msg']);
+            unset($_SESSION['alert_msg']);
         }
         if(isset($_SESSION['alert_type']) && !empty($_SESSION['alert_type']))
         {
             $alert_type = Security::secureHTML($_SESSION['alert_type']);
             unset($_SESSION['alert-type']);
         }
-        $alert['message'] = $alert_message;
+        $alert['message'] = $alert_msg;
         $alert['type'] = $alert_type;
         return $alert;
     }
@@ -167,19 +167,19 @@ class BackendController
 
             if($emailExist)
             {
-                $alert_message = "Un compte existe déja avec cet email";
+                $alert_msg = "Un compte existe déja avec cet email";
                 $alert_type = ALERT_WARNING;
                 $validate_email['valid'] = false;
             }
             elseif($pseudoExist)
             {
-                $alert_message = "Ce pseudo est déja utilisé. Veuillez en choisir un autre";
+                $alert_msg = "Ce pseudo est déja utilisé. Veuillez en choisir un autre";
                 $alert_type = ALERT_WARNING;
                 $validate_pseudo['valid'] = false;
             }
             elseif($password != $password_check)
             {
-                $alert_message = "Les mots de passe ne correspondent pas";
+                $alert_msg = "Les mots de passe ne correspondent pas";
                 $alert_type = ALERT_DANGER;
                 $validate_password['valid'] = false;
                 $validate_password_check['valid'] = false;
@@ -190,16 +190,16 @@ class BackendController
                 {
                     $password = Security::encryptPassword($password);
                     insertMember($email, $pseudo, $password);
-                    $alert_message = "L'enregistrement de ".$pseudo." a été effectué ";
+                    $alert_msg = "L'enregistrement de ".$pseudo." a été effectué ";
                     $alert_type = ALERT_SUCCESS;
                     header ("Location: home");
                 }catch(Exception $e)
                 {
-                    $alert_message  = "L'enregistrement n'a pas marché <br />". $e->getMessage();
+                    $alert_msg  = "L'enregistrement n'a pas marché <br />". $e->getMessage();
                     $alert_type  = ALERT_DANGER;
                 }
             }
-            $_SESSION['alert_message'] = $alert_message;
+            $_SESSION['alert_msg'] = $alert_msg;
             $_SESSION['alert_type'] = $alert_type;
         }
         else
@@ -258,7 +258,7 @@ class BackendController
             Security::generateCookiePassword();
 
             $alert = getInitAlert();
-            $alert_message = $alert['message'];
+            $alert_msg = $alert['message'];
             $alert_type = $alert['type'];
 
             if(isset($_GET['id']) && !empty($_GET['id']))
@@ -338,7 +338,7 @@ class BackendController
             $breadcrumb = $MyBreadcrumb->breadcrumb();
 
             $alert = getInitAlert();
-            $alert_message = $alert['message'];
+            $alert_msg = $alert['message'];
             $alert_type = $alert['type'];
 
             $categories = array();
@@ -368,7 +368,7 @@ class BackendController
         $breadcrumb = $MyBreadcrumb->breadcrumb();
 
         $alert = getInitAlert();
-        $alert_message = $alert['message'];
+        $alert_msg = $alert['message'];
         $alert_type = $alert['type'];
 
         // if(Security::checkAccess())
@@ -408,24 +408,24 @@ class BackendController
                     throw new Exception("Cette catégorie existe déja apparement");
                 }
 
-                $alert_message = "La catégorie ".$name_category." a été ajoutée";
+                $alert_msg = "La catégorie ".$name_category." a été ajoutée";
                 $alert_type = ALERT_SUCCESS;
 
-                $_SESSION['alert_message'] = $alert_message;
+                $_SESSION['alert_msg'] = $alert_msg;
                 $_SESSION['alert_type'] = $alert_type;
 
                 header ('Location: category&id='.$id_category);
-                // getPageCategory($id_category, $alert_message, $alert_type);
+                // getPageCategory($id_category, $alert_msg, $alert_type);
             }
             else
             {
                 if(!empty($_POST))
                 {           
                     // TODO : erreur pour chaque champs
-                    $alert_message = "Erreur lors de l'ajout";
+                    $alert_msg = "Erreur lors de l'ajout";
                     $alert_type = ALERT_DANGER;
 
-                    $_SESSION['alert_message'] = $alert_message;
+                    $_SESSION['alert_msg'] = $alert_msg;
                     $_SESSION['alert_type'] = $alert_type;
                 }
             }
@@ -454,7 +454,7 @@ class BackendController
         {
             // Security::generateCookiePassword();
             $alert = getInitAlert();
-            $alert_message = $alert['message'];
+            $alert_msg = $alert['message'];
             $alert_type = $alert['type'];
 
             if( isset($_GET['id']) && !empty($_GET['id']))
@@ -482,10 +482,10 @@ class BackendController
 
                     if(isset($_FILES['img_file']['size']) && empty($_FILES['img_file']['size']))
                     {
-                        $alert_message = "Catégorie modifiée avec succes";
+                        $alert_msg = "Catégorie modifiée avec succes";
                         $alert_type = ALERT_SUCCESS;
         
-                        $_SESSION['alert_message'] = $alert_message;
+                        $_SESSION['alert_msg'] = $alert_msg;
                         $_SESSION['alert_type'] = $alert_type;
         
                         header ('Location: category&id='.$id_category);
@@ -538,10 +538,10 @@ class BackendController
                     throw new Exception("L'insertion en BD n'a pas fonctionné");
                 }
 
-                $alert_message = "Catégorie modifiée avec succes";
+                $alert_msg = "Catégorie modifiée avec succes";
                 $alert_type = ALERT_SUCCESS;
 
-                $_SESSION['alert_message'] = $alert_message;
+                $_SESSION['alert_msg'] = $alert_msg;
                 $_SESSION['alert_type'] = $alert_type;
 
                 header ('Location: category&id='.$id_category);
@@ -551,10 +551,10 @@ class BackendController
                 if( isset($_POST['category_name']) && empty($_POST['category_name']))
                 {           
                     // TODO : erreur pour chaque champs
-                    $alert_message = "La categorie ne peut rester vide";
+                    $alert_msg = "La categorie ne peut rester vide";
                     $alert_type = ALERT_DANGER;
 
-                    $_SESSION['alert_message'] = $alert_message;
+                    $_SESSION['alert_msg'] = $alert_msg;
                     $_SESSION['alert_type'] = $alert_type;
                 }
             }
@@ -573,7 +573,7 @@ class BackendController
         $description = "Page de suppression de notes";
 
         $alert = getInitAlert();
-        $alert_message = $alert['message'];
+        $alert_msg = $alert['message'];
         $alert_type = $alert['type'];
 
 
@@ -591,18 +591,18 @@ class BackendController
                 // return;
                 $url = "public/sources/images/icons/user".$_SESSION['user']['id']."/".$image['url'];
                 deleteFile($url);
-                $alert_message = "La suppression de la catégorie est effective";
+                $alert_msg = "La suppression de la catégorie est effective";
                 $alert_type = ALERT_WARNING;
             } 
             catch(Exception $e)
             {
-                $alert_message = "La suppression de la catégorie n'a pas fonctionnée";
+                $alert_msg = "La suppression de la catégorie n'a pas fonctionnée";
                 $alert_type = ALERT_DANGER;
             }
-            $_SESSION['alert_message'] = $alert_message;
+            $_SESSION['alert_msg'] = $alert_msg;
             $_SESSION['alert_type'] = $alert_type;
         }
-        // getPageCategories($alert_message,$alert_type);
+        // getPageCategories($alert_msg,$alert_type);
         header ('Location: categories');
         
 
@@ -615,7 +615,7 @@ class BackendController
             Security::generateCookiePassword();
 
             $alert = getInitAlert();
-            $alert_message = $alert['message'];
+            $alert_msg = $alert['message'];
             $alert_type = $alert['type'];
 
             if(isset($_GET['id']) && !empty($_GET['id']))
@@ -675,7 +675,7 @@ class BackendController
             Security::generateCookiePassword();
 
             $alert = getInitAlert();
-            $alert_message = $alert['message'];
+            $alert_msg = $alert['message'];
             $alert_type = $alert['type'];
 
             $images = getUnusedImages($_SESSION['user']['id']);
@@ -730,9 +730,9 @@ class BackendController
                     }
                     // End uses ********************************
 
-                    $alert_message = "La note a été ajoutée";
+                    $alert_msg = "La note a été ajoutée";
                     $alert_type = ALERT_SUCCESS;
-                    $_SESSION['alert_message'] = $alert_message;
+                    $_SESSION['alert_msg'] = $alert_msg;
                     $_SESSION['alert_type'] = $alert_type;
                     header ('Location: note&id='.$id_note);
                 }
@@ -745,15 +745,15 @@ class BackendController
             {
                 if(isset($_POST['title']) && empty($_POST['title']))
                 {
-                    $alert_message = "Le titre ne peut être laissé vide";
+                    $alert_msg = "Le titre ne peut être laissé vide";
                     $alert_type = ALERT_DANGER;
                 }
                 elseif(isset($_POST['content']) && empty($_POST['content']))
                 {
-                    $alert_message = "Le contenu ne peut être laissé vide";
+                    $alert_msg = "Le contenu ne peut être laissé vide";
                     $alert_type = ALERT_DANGER;
                 }
-                $_SESSION['alert_message'] = $alert_message;
+                $_SESSION['alert_msg'] = $alert_msg;
                 $_SESSION['alert_type'] = $alert_type;
             }
             
@@ -782,7 +782,7 @@ class BackendController
             Security::generateCookiePassword();
 
             $alert = getInitAlert();
-            $alert_message = $alert['message'];
+            $alert_msg = $alert['message'];
             $alert_type = $alert['type'];
 
             if(isset($_POST['id_note']) && !empty($_POST['id_note'])
@@ -832,15 +832,15 @@ class BackendController
             {
                 if(isset($_POST['title']) && empty($_POST['title']))
                 {
-                    $alert_message = "Le titre ne peut rester vide";
+                    $alert_msg = "Le titre ne peut rester vide";
                     $alert_type = ALERT_DANGER;
                 }
                 elseif(isset($_POST['content']) && empty($_POST['content']))
                 {
-                    $alert_message = "Le contenu ne peut être laissé vide";
+                    $alert_msg = "Le contenu ne peut être laissé vide";
                     $alert_type = ALERT_DANGER;
                 }
-                $_SESSION['alert_message'] = $alert_message;
+                $_SESSION['alert_msg'] = $alert_msg;
                 $_SESSION['alert_type'] = $alert_type;
                 try
                 {
@@ -893,7 +893,7 @@ class BackendController
         $description = "Page de suppression de note";
 
         $alert = getInitAlert();
-        $alert_message = $alert['message'];
+        $alert_msg = $alert['message'];
         $alert_type = $alert['type'];
 
 
@@ -908,17 +908,17 @@ class BackendController
                 {
                     throw new Exception ("la suppression de la note n'a pas fonctionné");
                 }
-                $alert_message = "La note à été suprimée";
+                $alert_msg = "La note à été suprimée";
                 $alert_type = ALERT_WARNING;
             } catch(Exception $e){
-                $alert_message = "La suppression de la catégorie n'a pas fonctionnée";
+                $alert_msg = "La suppression de la catégorie n'a pas fonctionnée";
                 $alert_type = ALERT_DANGER;
             }
-            $_SESSION['alert_message'] = $alert_message;
+            $_SESSION['alert_msg'] = $alert_msg;
             $_SESSION['alert_type'] = $alert_type;
         }
         // return;
-        // getPageCategories($alert_message,$alert_type);
+        // getPageCategories($alert_msg,$alert_type);
         header ('Location: categories');
 
     }
@@ -933,7 +933,7 @@ class BackendController
             Security::generateCookiePassword();
 
             $alert = getInitAlert();
-            $alert_message = $alert['message'];
+            $alert_msg = $alert['message'];
             $alert_type = $alert['type'];
 
             try 
@@ -968,7 +968,7 @@ class BackendController
         {
             // Security::generateCookiePassword();
             $alert = getInitAlert();
-            $alert_message = $alert['message'];
+            $alert_msg = $alert['message'];
             $alert_type = $alert['type'];
 
             if(!empty($_FILES))
@@ -1026,16 +1026,16 @@ class BackendController
                 }
 
                 if($nb_files > 1)
-                    $alert_message = "Les images ont été ajoutées";
+                    $alert_msg = "Les images ont été ajoutées";
                 else
-                    $alert_message = "L'image ".$tempName." a été ajoutée";
+                    $alert_msg = "L'image ".$tempName." a été ajoutée";
 
                 $alert_type = ALERT_SUCCESS;
-                $_SESSION['alert_message'] = $alert_message;
+                $_SESSION['alert_msg'] = $alert_msg;
                 $_SESSION['alert_type'] = $alert_type;
                 // header ('Location: image&id='.$id_image);
                 header ('Location: library');
-                // getPageLibrary($alert_message, $alert_type);
+                // getPageLibrary($alert_msg, $alert_type);
                 // exit();
             }
             else
@@ -1043,7 +1043,7 @@ class BackendController
                 // if(!empty($_POST))
                 // {           
                 //     // TODO : erreur pour chaque champs
-                //     $alert_message = "Erreur lors de l'ajout";
+                //     $alert_msg = "Erreur lors de l'ajout";
                 //     $alert_type = ALERT_DANGER;
                 // }
             }
@@ -1059,7 +1059,7 @@ class BackendController
 
     function getPageSearch()
     {
-        $alert_message = "";
+        $alert_msg = "";
         $alert_type="";
         $title = "Recherche";
         $description = "Page de recherche";
@@ -1075,7 +1075,7 @@ class BackendController
             Security::generateCookiePassword();
 
             $alert = getInitAlert();
-            $alert_message = $alert['message'];
+            $alert_msg = $alert['message'];
             $alert_type = $alert['type'];
 
             if(isset($_POST['search']))
@@ -1083,9 +1083,9 @@ class BackendController
                 $search = Security::secureHTML($_POST['search']);
                 if(strlen($search) <= 0)
                 {
-                    $alert_message = 'La recherche ne peut être laissée vide';
+                    $alert_msg = 'La recherche ne peut être laissée vide';
                     $alert_type = ALERT_DANGER;
-                    $_SESSION['alert_message'] = $alert_message;
+                    $_SESSION['alert_msg'] = $alert_msg;
                     $_SESSION['alert_type'] = $alert_type;
                     header ('Location: home');
                 } 
@@ -1150,7 +1150,7 @@ class BackendController
         $description = "Page de suppression d'image";
 
         $alert = getInitAlert();
-        $alert_message = $alert['message'];
+        $alert_msg = $alert['message'];
         $alert_type = $alert['type'];
 
 
@@ -1166,16 +1166,16 @@ class BackendController
                 }
                 $url = "public/sources/images/images/user".$_SESSION['user']['id']."/".$image['url'];
                 deleteFile($url);
-                $alert_message = "La suppression de l'image est effective";
+                $alert_msg = "La suppression de l'image est effective";
                 $alert_type = ALERT_WARNING;
             } catch(Exception $e){
-                $alert_message = "La suppression de l'image n'a pas fonctionnée";
+                $alert_msg = "La suppression de l'image n'a pas fonctionnée";
                 $alert_type = ALERT_DANGER;
             }
-            $_SESSION['alert_message'] = $alert_message;
+            $_SESSION['alert_msg'] = $alert_msg;
             $_SESSION['alert_type'] = $alert_type;
         }
-        // getPageCategories($alert_message,$alert_type);
+        // getPageCategories($alert_msg,$alert_type);
         header ('Location: library');
 
     }
@@ -1190,10 +1190,10 @@ class BackendController
         deleteFolder($folder.'icons/user'.$_SESSION['user']['id']);
         deleteFolder($folder.'images/user'.$_SESSION['user']['id']);
 
-        $alert_message = "Suppression de toutes les données concernant ".$_SESSION['user']['pseudo'];
+        $alert_msg = "Suppression de toutes les données concernant ".$_SESSION['user']['pseudo'];
         $alert_type= ALERT_DANGER;
-        // getPageHomeLogged($alert_message, $alert_type);
-        $_SESSION['alert_message'] = $alert_message;
+        // getPageHomeLogged($alert_msg, $alert_type);
+        $_SESSION['alert_msg'] = $alert_msg;
         $_SESSION['alert_type'] = $alert_type;
         header ("Location: home");
     }

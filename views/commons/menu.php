@@ -1,20 +1,6 @@
 <?php
-if(empty($menu_state) || !isset($menu_state)){ $menu_state = MENU_STATE_INITIAL; }
-// ************ INITIAL ************
- if($menu_state === MENU_STATE_INITIAL)
- { ?>
- <ul class="nav justify-content-center text-center">
-    <li class="nav-item col-3 p-1">
-      <a class="nav-link text-info border-right border-bottom border-info" href="<?= URL ?>login">S'identifier</a>
-    </li>
-    <li class="nav-item col-3 p-1">
-      <a class="nav-link text-info border-left border-bottom border-info" href="<?= URL ?>register">S'enregistrer</a>
-    </li>
-  </ul>
-<?php 
-} 
 // ************ LOGGED ************
-elseif($menu_state === MENU_STATE_LOGGED)
+if((isset($_SESSION['user']) && !empty($_SESSION['user'])))
 { ?>
 <nav class="navbar navbar-expand-lg col-12">
   <ul class="navbar-nav text-center p-0 col-12 justify-content-center">
@@ -35,9 +21,24 @@ elseif($menu_state === MENU_STATE_LOGGED)
 </nav>
 <?php 
 } 
+else
+{
+  // ************ NO LOG ************
+  ?>
+  <ul class="nav justify-content-center text-center">
+      <li class="nav-item col-3 p-1">
+        <a class="nav-link text-info border-right border-bottom border-info" href="<?= URL ?>login">S'identifier</a>
+      </li>
+      <li class="nav-item col-3 p-1">
+        <a class="nav-link text-info border-left border-bottom border-info" href="<?= URL ?>register">S'enregistrer</a>
+      </li>
+    </ul>
+  <?php 
+} 
  
- // ************ BREADCRUMB + LOGGED ************
- if( $menu_state === MENU_STATE_BREADCRUMB){ ?>
+ // ************ BREADCRUMB  ************
+  if(isset($breadcrumb))
+  {?>
  <nav aria-label="breadcrumb justify-content-center" 
       class="col-12 px-3 mb-1 p-sm-0 offset-sm-1 col-sm-10 offset-lg-2 col-lg-8">
     <ol class="breadcrumb">
@@ -66,6 +67,20 @@ elseif($menu_state === MENU_STATE_LOGGED)
   </nav>
 <?php } 
 
+
+/**
+ * LOG MESSAGE
+ */
+// If SESSION ALERT EXIST, COPY TO LOCAL VAR
+if(isset($_SESSION['alert']['msg']) && !empty($_SESSION['alert']['msg']) 
+  && isset($_SESSION['alert']['type']) && !empty($_SESSION['alert']['type']) )
+{
+  $alert['msg'] = $_SESSION['alert']['msg'];
+  $alert['type'] = $_SESSION['alert']['type'];
+  unset($_SESSION['alert']['msg']);
+  unset($_SESSION['alert']['type']);
+}
+// CHECK LOCAL VAR AND DISPLAY IT
 if(isset($alert['msg']) && !empty(($alert['msg'])))
 {
     $type= null;

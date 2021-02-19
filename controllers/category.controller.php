@@ -20,7 +20,7 @@ class CategoryController
             Security::generateCookiePassword();
 
             // $alert = getInitAlert();
-            // $alert_message = $alert['message'];
+            // $alert_msg = $alert['message'];
             // $alert_type = $alert['type'];
 
             if(isset($_GET['id']) && !empty($_GET['id']))
@@ -100,7 +100,7 @@ class CategoryController
             $breadcrumb = $MyBreadcrumb->breadcrumb();
 
             // $alert = getInitAlert();
-            // $alert_message = $alert['message'];
+            // $alert_msg = $alert['message'];
             // $alert_type = $alert['type'];
 
             $categories = array();
@@ -130,7 +130,7 @@ class CategoryController
         $breadcrumb = $MyBreadcrumb->breadcrumb();
 
         // $alert = getInitAlert();
-        // $alert_message = $alert['message'];
+        // $alert_msg = $alert['message'];
         // $alert_type = $alert['type'];
 
         // if(Security::checkAccess())
@@ -170,24 +170,24 @@ class CategoryController
                     throw new Exception("Cette catégorie existe déja apparement");
                 }
 
-                $alert_message = "La catégorie ".$name_category." a été ajoutée";
+                $alert_msg = "La catégorie ".$name_category." a été ajoutée";
                 $alert_type = ALERT_SUCCESS;
 
-                $_SESSION['alert_message'] = $alert_message;
+                $_SESSION['alert_msg'] = $alert_msg;
                 $_SESSION['alert_type'] = $alert_type;
 
                 header ('Location: category&id='.$id_category);
-                // getPageCategory($id_category, $alert_message, $alert_type);
+                // getPageCategory($id_category, $alert_msg, $alert_type);
             }
             else
             {
                 if(!empty($_POST))
                 {           
                     // TODO : erreur pour chaque champs
-                    $alert_message = "Erreur lors de l'ajout";
+                    $alert_msg = "Erreur lors de l'ajout";
                     $alert_type = ALERT_DANGER;
 
-                    $_SESSION['alert_message'] = $alert_message;
+                    $_SESSION['alert_msg'] = $alert_msg;
                     $_SESSION['alert_type'] = $alert_type;
                 }
             }
@@ -216,7 +216,7 @@ class CategoryController
         {
             // Security::generateCookiePassword();
             // $alert = getInitAlert();
-            // $alert_message = $alert['message'];
+            // $alert_msg = $alert['message'];
             // $alert_type = $alert['type'];
 
             if( isset($_GET['id']) && !empty($_GET['id']))
@@ -244,10 +244,10 @@ class CategoryController
 
                     if(isset($_FILES['img_file']['size']) && empty($_FILES['img_file']['size']))
                     {
-                        $alert_message = "Catégorie modifiée avec succes";
+                        $alert_msg = "Catégorie modifiée avec succes";
                         $alert_type = ALERT_SUCCESS;
         
-                        $_SESSION['alert_message'] = $alert_message;
+                        $_SESSION['alert_msg'] = $alert_msg;
                         $_SESSION['alert_type'] = $alert_type;
         
                         header ('Location: category&id='.$id_category);
@@ -300,10 +300,10 @@ class CategoryController
                     throw new Exception("L'insertion en BD n'a pas fonctionné");
                 }
 
-                $alert_message = "Catégorie modifiée avec succes";
+                $alert_msg = "Catégorie modifiée avec succes";
                 $alert_type = ALERT_SUCCESS;
 
-                $_SESSION['alert_message'] = $alert_message;
+                $_SESSION['alert_msg'] = $alert_msg;
                 $_SESSION['alert_type'] = $alert_type;
 
                 header ('Location: category&id='.$id_category);
@@ -313,10 +313,10 @@ class CategoryController
                 if( isset($_POST['category_name']) && empty($_POST['category_name']))
                 {           
                     // TODO : erreur pour chaque champs
-                    $alert_message = "La categorie ne peut rester vide";
+                    $alert_msg = "La categorie ne peut rester vide";
                     $alert_type = ALERT_DANGER;
 
-                    $_SESSION['alert_message'] = $alert_message;
+                    $_SESSION['alert_msg'] = $alert_msg;
                     $_SESSION['alert_type'] = $alert_type;
                 }
             }
@@ -335,7 +335,7 @@ class CategoryController
         $description = "Page de suppression de notes";
 
         // $alert = getInitAlert();
-        // $alert_message = $alert['message'];
+        // $alert_msg = $alert['message'];
         // $alert_type = $alert['type'];
 
 
@@ -353,18 +353,18 @@ class CategoryController
                 // return;
                 $url = "public/sources/images/icons/user".$_SESSION['user']['id']."/".$image['url'];
                 deleteFile($url);
-                $alert_message = "La suppression de la catégorie est effective";
+                $alert_msg = "La suppression de la catégorie est effective";
                 $alert_type = ALERT_WARNING;
             } 
             catch(Exception $e)
             {
-                $alert_message = "La suppression de la catégorie n'a pas fonctionnée";
+                $alert_msg = "La suppression de la catégorie n'a pas fonctionnée";
                 $alert_type = ALERT_DANGER;
             }
-            $_SESSION['alert_message'] = $alert_message;
+            $_SESSION['alert_msg'] = $alert_msg;
             $_SESSION['alert_type'] = $alert_type;
         }
-        // getPageCategories($alert_message,$alert_type);
+        // getPageCategories($alert_msg,$alert_type);
         header ('Location: categories');
         
 

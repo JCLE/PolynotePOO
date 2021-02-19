@@ -27,7 +27,7 @@ class BackendController
         // $alert = Security::checkAlert();
         if(isset($_SESSION['user']) && !empty($_SESSION['user']))
         {
-            $menu_state = MENU_STATE_LOGGED; // TODO : refactoriser menu
+            // $menu_state = MENU_STATE_LOGGED; // TODO : refactoriser menu
             $title = "Page d'accueil de ".$_SESSION['user']['pseudo'];
             $description = "Bienvenue sur Polynote";
             require_once "views/front/home.view.php";
@@ -73,6 +73,24 @@ class BackendController
     {
         $noteController = new NoteController();
         $noteController->getPageLibrary();
+    }
+
+    /**
+     * ADD IMAGE TO LIBRARY
+     */
+    function getPageAddImage()
+    {
+        $noteController = new NoteController();
+        $noteController->getPageAddImage();
+    }
+
+    /**
+     * DELETE IMAGE FROM LIBRARY
+     */
+    function getPageDeleteImage()
+    {
+        $noteController = new NoteController();
+        $noteController->getPageDeleteImage();
     }
 }
 

@@ -12,7 +12,7 @@ class FrontendController
             Security::generateCookiePassword();
             // ************************* ALERT MESSAGE INIT **************************
             // $alert = getInitAlert();
-            // $alert_message = $alert['message'];
+            // $alert_msg = $alert['message'];
             // $alert_type = $alert['type'];
             // ************************ END ALERT MESSAGE INIT ************************
             $backendController = new BackendController();
@@ -21,7 +21,7 @@ class FrontendController
         else
         {
             $title = "Page d'accueil";
-            $menu_state = MENU_STATE_INITIAL;
+            // $menu_state = MENU_STATE_INITIAL;
             $description = "Bienvenue sur Polynote";
             require_once "views/front/home.view.php";
          }

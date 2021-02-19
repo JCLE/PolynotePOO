@@ -19,7 +19,7 @@ class UserController
     public function getPageLogin()
     {
         $alert = Security::checkAlert();
-        $menu_state = MENU_STATE_INITIAL; // TODO : refactoriser menu
+        // $menu_state = MENU_STATE_INITIAL; // TODO : refactoriser menu
         $title = "Page de connexion";
         $description = "Page permettant l'authentification";
 
@@ -91,7 +91,7 @@ class UserController
     public function getPageRegister()
     {
         $alert = Security::checkAlert();
-        $menu_state = MENU_STATE_INITIAL;
+        // $menu_state = MENU_STATE_INITIAL;
         $title = "Page d'enregistrement";
         $description = "Page permettant de s'enregistrer sur le site";
 

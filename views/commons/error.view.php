@@ -1,6 +1,10 @@
 <?php ob_start();  ?>
 
-<h1 class="text-center">Erreur</h1>
+<div class="text-center">
+    <a href="home" class="d-inline-flex text-center text-info nav-link border-info border-bottom border-left border-right">
+        <h1>Erreur</h1>
+    </a>
+</div>
 <?php
     if(isset($msg) && !empty($msg))
     { 

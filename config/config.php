@@ -15,9 +15,9 @@
     const ALERT_INFO = "info";
     const ALERT_WARNING = "warning";
 
-    const MENU_STATE_INITIAL = 1;
-    const MENU_STATE_LOGGED = 2;
-    const MENU_STATE_BREADCRUMB = 3;
+    // const MENU_STATE_INITIAL = 1;
+    // const MENU_STATE_LOGGED = 2;
+    // const MENU_STATE_BREADCRUMB = 3;
 
     const LIMIT_NOTES_BY_PAGE = 10;
 

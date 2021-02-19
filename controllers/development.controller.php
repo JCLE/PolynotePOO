@@ -16,9 +16,9 @@ function getPageDeleteAll()
     deleteDirectory($folder.'icons');
     deleteDirectory($folder.'images');
 
-    $alert_message = "Suppression de toutes les données";
+    $alert_msg = "Suppression de toutes les données";
     $alert_type= ALERT_DANGER;
-    getPageHomeLogged($alert_message, $alert_type);
+    getPageHomeLogged($alert_msg, $alert_type);
     // header ("Location: home");
 }
 
