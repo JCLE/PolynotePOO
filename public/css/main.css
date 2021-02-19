@@ -1,0 +1,85 @@
+body
+{    
+    background-color:rgb(202, 202, 202);
+}
+
+.test
+{
+    background-color: red;
+}
+.test2
+{
+    background-color: blue;
+}
+
+.breadcrumb, .alert, .nav
+{
+    margin:0 !important; 
+}
+
+.perso_shadow{box-shadow : 0px 2px 15px black;}
+
+
+/* Animation et colorisation du titre du site */
+    .titleStyle, .titleStyle:link
+    {
+        /* variables */
+        --bordercolor-title-1: #4094b5;
+        --bordercolor-title-2: #0e1824;
+        --color-title-1 : rgba(255, 255, 255, 0.863);
+        --color-title-2 : rgb(45, 111, 124);
+
+        font-family: 'Yellowtail', cursive;        
+        font-size: 42px;;
+        letter-spacing: 3px;
+        text-decoration: none;
+        color: var(--color-title-1);
+        text-shadow: 2px 2px 0 var(--bordercolor-title-1), 2px -2px 0 var(--bordercolor-title-1), -2px 2px 0 var(--bordercolor-title-1), -2px -2px 0 var(--bordercolor-title-1), 2px 0px 0 var(--bordercolor-title-1), 0px 2px 0 var(--bordercolor-title-1), -2px 0px 0 var(--bordercolor-title-1), 0px -2px 0 var(--bordercolor-title-1);
+    }
+    .titleStyle:hover
+    {
+        animation-duration: 2s;
+        animation-iteration-count:infinite;
+        animation-name: hover-title;
+    }
+
+    /* Animation du titre lors du survol */
+    @keyframes hover-title
+    {
+        0%
+        {
+            color: var(--color-title-1);
+            text-shadow: 2px 2px 0 var(--bordercolor-title-1), 2px -2px 0 var(--bordercolor-title-1), -2px 2px 0 var(--bordercolor-title-1), -2px -2px 0 var(--bordercolor-title-1), 2px 0px 0 var(--bordercolor-title-1), 0px 2px 0 var(--bordercolor-title-1), -2px 0px 0 var(--bordercolor-title-1), 0px -2px 0 var(--bordercolor-title-1);
+        }
+        50%
+        {
+            color: var(--color-title-2);
+            text-shadow: 2px 2px 0 var(--bordercolor-title-2), 2px -2px 0 var(--bordercolor-title-2), -2px 2px 0 var(--bordercolor-title-2), -2px -2px 0 var(--bordercolor-title-2), 2px 0px 0 var(--bordercolor-title-2), 0px 2px 0 var(--bordercolor-title-2), -2px 0px 0 var(--bordercolor-title-2), 0px -2px 0 var(--bordercolor-title-2);
+        }
+        100%
+        {
+            color: var(--color-title-1);
+            text-shadow: 2px 2px 0 var(--bordercolor-title-1), 2px -2px 0 var(--bordercolor-title-1), -2px 2px 0 var(--bordercolor-title-1), -2px -2px 0 var(--bordercolor-title-1), 2px 0px 0 var(--bordercolor-title-1), 0px 2px 0 var(--bordercolor-title-1), -2px 0px 0 var(--bordercolor-title-1), 0px -2px 0 var(--bordercolor-title-1);
+        }
+    }
+/* FIN Animation et colorisation du titre du site */
+
+.clickable:hover
+{
+	cursor: pointer;
+}
+
+.top-right
+{
+    right:0;
+    top:0;
+}
+
+.hidden-input-file {
+	width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
+}

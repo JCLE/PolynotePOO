@@ -1,0 +1,42 @@
+RewriteEngine On
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+RewriteRule ^(.*)$ index.php?page=$1
+
+# ErrorDocument 301 /TUTO/Sitev2/index.php?page=error301
+# ErrorDocument 302 /TUTO/Sitev2/index.php?page=error302
+# ErrorDocument 401 /TUTO/Sitev2/index.php?page=error401
+# ErrorDocument 402 /TUTO/Sitev2/index.php?page=error402
+# #acces interdit
+# ErrorDocument 403 /TUTO/Sitev2/index.php?page=error403 
+# #page non trouvée
+# ErrorDocument 404 /TUTO/Sitev2/index.php?page=error404
+# ErrorDocument 405 /TUTO/Sitev2/index.php?page=error405
+# #erreur serveur
+# ErrorDocument 500 /TUTO/Sitev2/index.php?page=error500
+# ErrorDocument 505 /TUTO/Sitev2/index.php?page=error505
+
+#empeche l'acces au listing index of du site
+Options All -Indexes
+#Masquer informations serveur
+ServerSignature Off
+#Activation du suivi des liens symboliques
+Options +FollowSymLinks
+#Forcer l'encodage par defaut des fichiers en utf-8
+AddDefaultCharset UTF-8
+
+#Protection XSS, clickJacking et Mime-Type
+<ifModule mod_headers.c>
+Header set X-XSS-Protection "1; mode=block"
+Header always append X-Frame-Options SAMEORIGIN
+Header set X-Content-Type-Options: "nosniff”
+</ifModule>
+
+# protection contre les injections de fichiers
+RewriteCond %{REQUEST_METHOD} GET
+RewriteCond %{QUERY_STRING} [a-zA-Z0-9_]=http:// [OR]
+RewriteCond %{QUERY_STRING} [a-zA-Z0-9_]=(\.\.//?)+ [OR]
+RewriteCond %{QUERY_STRING} [a-zA-Z0-9_]=/([a-z0-9_.]//?)+ [NC]
+RewriteRule .* - [F]
