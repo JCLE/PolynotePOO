@@ -30,7 +30,7 @@ if(empty($categories))
         </div>
         <a tabindex=3 class="text-decoration-none col-12" href="category&id=<?= $category['id_category'] ?>">
             <div class="thumbnail col-12">
-                <img src="public/sources/images/icons/user<?= $category['id_user'] ?>/<?= $category['url'] ?>" alt="<?= $category['description'] ?>"/>
+                <img src="<?= USER_DIRECTORY ?>icons/user<?= $category['id_user'] ?>/<?= $category['url'] ?>" alt="<?= $category['description'] ?>"/>
                 <p class=" col-12 text-primary mb-0"><?= $category['name'] ?><span class="ml-2 badge alert-primary"><?= $category['nb_notes'] ?></span></p>
             </div>
         </a>

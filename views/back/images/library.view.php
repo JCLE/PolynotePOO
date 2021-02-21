@@ -32,7 +32,7 @@ if(empty($images))
         <!-- clas retirée : d-flex align-items-center -->
         <a tabindex=2 class="text-decoration-none col-auto" href="category&id=<?= $category['id_category'] ?>">
             <div class=" justify-content-center">
-                <img style="max-height: 100px;" class="img-thumbnail align-self-center" src="public/sources/images/images/user<?= $image['id_user'] ?>/<?= $image['url'] ?>" alt="<?= $image['description'] ?>"/>
+                <img style="max-height: 100px;" class="img-thumbnail align-self-center" src="<?= USER_DIRECTORY ?>images/user<?= $image['id_user'] ?>/<?= $image['url'] ?>" alt="<?= $image['description'] ?>"/>
             </div>
         </a>
 

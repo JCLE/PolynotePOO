@@ -13,7 +13,7 @@ ob_start();
                 data-placeholder="Vide" data-dragdrop="false">
                 <label for="img_file" class="col-1">
                     <a class="clickable" onclick="">
-                        <img src="public/sources/images/icons/user<?= $category['id_user'] ?>/<?= $category['url'] ?>" alt="Image representant l'icone de la catégorie"/>
+                        <img src="<?= USER_DIRECTORY ?>icons/user<?= $category['id_user'] ?>/<?= $category['url'] ?>" alt="Image representant l'icone de la catégorie"/>
                     </a>
                 </label>
         </div>

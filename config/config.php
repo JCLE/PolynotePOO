@@ -24,7 +24,7 @@
     const LIMIT_AJAX_RETURN = 5;
     const LIMIT_SEARCH_RETURN = 20;
 
-    const IMG_DIRECTORY = "public/sources/images/";
+    const USER_DIRECTORY = "public/sources/users/";
 
     define("URL",str_replace("index.php","", (isset($_SERVER["HTTPS"])? "https" : "http"). "://$_SERVER[HTTP_HOST]$_SERVER[PHP_SELF]"));
 ?>

@@ -6,7 +6,7 @@ ob_start();
 <div class="row justify-content-center text-center mb-2">
     <a class="text-decoration-none text-primary" href="editcategory&id=<?= $category["id_category"] ?>">
         <h1 class="col-12"><?= $category["name"] ?></h1>
-        <img src="public/sources/images/icons/user<?= $category['id_user'] ?>/<?= $category['url'] ?>" alt="<?= $category['description'] ?>"/>
+        <img src="<?= USER_DIRECTORY ?>icons/user<?= $category['id_user'] ?>/<?= $category['url'] ?>" alt="<?= $category['description'] ?>"/>
     </a>
 </div>
 <div class="row justify-content-center mb-2">
@@ -23,7 +23,7 @@ foreach( $notes as $note ) : ?>
     <a tabindex=2 class="text-decoration-none text-dark" href="note&id=<?= $note['id'] ?>">
         <div class="row no-gutters col-12 m-0 p-0">
             <div class="d-flex align-items-center col-1 justify-content-center alert-primary">
-                <img class="d-none d-md-block" src="public/sources/images/icons/user<?= $category['id_user'] ?>/<?= $category['url'] ?>" class="card-img img-fluid" alt="<?= $category['description'] ?>">
+                <img class="d-none d-md-block" src="<?= USER_DIRECTORY ?>icons/user<?= $category['id_user'] ?>/<?= $category['url'] ?>" class="card-img img-fluid" alt="<?= $category['description'] ?>">
             </div>
             <div class="col-md-11">
             <div class="card-body text-center">

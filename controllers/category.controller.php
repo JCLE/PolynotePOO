@@ -40,7 +40,7 @@ class CategoryController
                         $fileImage['size'] = $_FILES['img_file']['size'][$i];
 
                         // create folder if not exist
-                        $dir = "public/sources/images/images";
+                        $dir = USER_DIRECTORY."/images";
                         if(!file_exists($dir)) mkdir($dir,0777);
                         $directory = $dir."/user".$_SESSION['user']['id']."/";
                         
@@ -92,7 +92,7 @@ class CategoryController
                 {
                     throw new Exception ("Aucune image supprimée");
                 }
-                $url = "public/sources/images/images/user".$_SESSION['user']['id']."/".$image['url'];
+                $url = USER_DIRECTORY."images/user".$_SESSION['user']['id']."/".$image['url'];
                 deleteFile($url);
                 $alert['msg'] = "La suppression de l'image est effective";
                 $alert['type'] = ALERT_WARNING;
@@ -223,7 +223,7 @@ class CategoryController
                     try // Insert Img file
                     {
                         $fileImage = $_FILES['img_file'];
-                        $dir = "public/sources/images/icons";
+                        $dir = USER_DIRECTORY."icons";
                         // create folder if not exist
                         if(!file_exists($dir)) mkdir($dir,0777);
                         $directory = $dir."/user".$_SESSION['user']['id']."/";
@@ -336,7 +336,7 @@ class CategoryController
                     $oldimage = getImageFromCategory($id_category, $_SESSION['user']['id']);
 
                     $fileImage = $_FILES['img_file'];
-                    $dir = IMG_DIRECTORY."icons";
+                    $dir = USER_DIRECTORY."icons";
                     // create folder if not exist
                     if(!file_exists($dir)) mkdir($dir,0777);
                     $directory = $dir."/user".$_SESSION['user']['id']."/";
@@ -355,7 +355,7 @@ class CategoryController
                     {
                         throw new Exception ("la suppression n'a pas fonctionné en BD");
                     }
-                    $url = "public/sources/images/icons/user".$_SESSION['user']['id']."/".$oldimage['url'];
+                    $url = USER_DIRECTORY."icons/user".$_SESSION['user']['id']."/".$oldimage['url'];
                     deleteFile($url);
                 }
                 catch(Exception $e)
@@ -407,7 +407,7 @@ class CategoryController
                     throw new Exception ("la suppression n'a pas fonctionné en BD");
                 }
                 // return;
-                $url = "public/sources/images/icons/user".$_SESSION['user']['id']."/".$image['url'];
+                $url = USER_DIRECTORY."icons/user".$_SESSION['user']['id']."/".$image['url'];
                 deleteFile($url);
                 $alert['msg'] = "La suppression de la catégorie est effective";
                 $alert['type'] = ALERT_WARNING;
