@@ -48,18 +48,18 @@ foreach( $notes as $note ) : ?>
         /* Si on est sur la première page, on n'a pas besoin d'afficher de lien
         * vers la précédente. On va donc l'afficher que si on est sur une autre
         * page que la première */
-        if ($page > 1):
-            ?><a tabindex=10 class="text-decoration-none" href="category&id=<?= $category['id_category'] ?>&page=<?php echo $page - 1; ?>">Page précédente</a><?php
+        if ($pageNum > 1):
+            ?><a tabindex=10 class="text-decoration-none" href="category&id=<?= $category['id_category'] ?>&page=<?php echo $pageNum - 1; ?>">Page précédente</a><?php
         endif;
 
         if($nb_pages > 1)
         {
             /* On va effectuer une boucle autant de fois que l'on a de pages */
             for ($i = 1; $i <= $nb_pages; $i++):
-                if($page==$i):
+                if($pageNum==$i):
                      echo '&nbsp;'.$i; 
                 else: ?>
-                    <a tabindex=10 class="text-decoration-none" href="category&id=<?= $category['id_category'] ?>&page=<?php 
+                    <a tabindex=10 class="text-decoration-none" href="category&id=<?= $category['id_category'] ?>&pageNum=<?php 
                             echo $i; ?>"><?php echo '&nbsp;'.$i; ?></a>
         <?php   endif; 
             endfor;
@@ -67,8 +67,8 @@ foreach( $notes as $note ) : ?>
 
         /* Avec le nombre total de pages, on peut aussi masquer le lien
         * vers la page suivante quand on est sur la dernière */
-        if ($page < $nb_pages):
-            ?> <a tabindex=10 class="text-decoration-none" href="category&id=<?= $category['id_category'] ?>&page=<?php echo $page + 1; ?>">&nbsp;Page suivante</a><?php
+        if ($pageNum < $nb_pages):
+            ?> <a tabindex=10 class="text-decoration-none" href="category&id=<?= $category['id_category'] ?>&pageNum=<?php echo $pageNum + 1; ?>">&nbsp;Page suivante</a><?php
         endif;
     ?>
 </div>

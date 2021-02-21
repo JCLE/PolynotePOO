@@ -17,11 +17,6 @@ try
     }
     else
     {
-        // $_SESSION['alert']['msg'] = "test de message partant de index -> backendControllers -> view/common/menu";
-        // $_SESSION['alert']['type'] = ALERT_SUCCESS;
-        // var_dump($_SESSION['alert_msg']);
-        // return;
-
         $url = explode("/", filter_var($_GET['page']), FILTER_SANITIZE_URL);
         switch($url[0])
         {
@@ -38,6 +33,16 @@ try
             case "addimage" : $backendController->getPageAddImage();
             break;
             case "deleteimage" : $backendController->getPageDeleteImage();
+            break;
+            case "categories" : $backendController->getPageCategories();
+            break;
+            case "category" : $backendController->getPageCategory();
+            break;
+            case "addcategory" : $backendController->getPageAddCategory();
+            break;
+            case "editcategory" : $backendController->getPageEditCategory();
+            break;
+            case "deletecategory" : $backendController->getPageDeleteCategory();
             break;
             default : throw new Exception("La page n'existe pas");
         }

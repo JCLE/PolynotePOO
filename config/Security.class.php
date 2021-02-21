@@ -36,10 +36,16 @@ class Security
         }
     }
 
+    /**
+     * Check if User session exist
+    */
     public static function checkAccessSession(){
         return (isset($_SESSION['user']) && !empty($_SESSION['user']));
     }
 
+    /**
+     * Check Cookie and User session
+     */
     public static function checkAccess(){
         return (self::checkAccessSession() && self::checkCookie());
     }

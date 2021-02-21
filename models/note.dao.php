@@ -4,7 +4,6 @@ require_once "models/pdo.php";
 /**     *****************
  *      ****** GET ******
  */
-
 function getSearch($search,$id_user){
     $bdd = connexionPDO();
     $stmt = $bdd->prepare('
@@ -117,7 +116,6 @@ function getNoteIDFromTitle($title, $id_user)
 /**     ******************
  *      ***** INSERT *****
  */
-
 function insertNoteFromCategory($title,$content,$tags, $id_category, $id_user){
     $bdd = connexionPDO();
     $req = '
@@ -141,7 +139,6 @@ function insertNoteFromCategory($title,$content,$tags, $id_category, $id_user){
 /**     ******************
  *      ***** UPDATE *****
  */
-
 function updateNoteFromUser($id, $title, $content, $tags, $id_category, $id_user){
     $bdd = connexionPDO();
     $req = '
@@ -167,7 +164,6 @@ function updateNoteFromUser($id, $title, $content, $tags, $id_category, $id_user
 /**     ******************
  *      ***** DELETE *****
  */
-
 function deleteNote($id_note, $id_user){
     $bdd = connexionPDO();
     $req = '

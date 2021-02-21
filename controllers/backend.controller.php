@@ -6,36 +6,48 @@ require_once "models/category.dao.php";
 require_once "models/image.dao.php";
 require_once "public/useful/MyBreadcrumb.php"; 
 require_once "public/useful/imgManager.php";
-// require_once "controllers/category.controller.php";
 require_once "controllers/user.controller.php";
 require_once "controllers/frontend.controller.php";
+require_once "controllers/category.controller.php";
 require_once "controllers/note.controller.php";
+
 // require_once "public/useful/alertManager.php";
 // require_once "models/image.dao.php";
 // require_once "models/admin.dao.php";
 require_once "config/config.php";
+require_once "config/Alert.class.php";
 
 // $categoryController = new CategoryController();
 
 class BackendController
 {
+    private $frontendController;
+    private $noteController;
+    private $userController;
+    private $categoryController;
+
+    function __construct()
+    {
+        $this->noteController = new NoteController();
+        $this->userController = new UserController();
+        $this->frontendController = new FrontendController();
+        $this->categoryController = new CategoryController();
+    }
+
     /**
      * HOME PAGE LOGGED
      */
     public function getPageHome()
     {
-        // $alert = Security::checkAlert();
         if(isset($_SESSION['user']) && !empty($_SESSION['user']))
         {
-            // $menu_state = MENU_STATE_LOGGED; // TODO : refactoriser menu
             $title = "Page d'accueil de ".$_SESSION['user']['pseudo'];
             $description = "Bienvenue sur Polynote";
             require_once "views/front/home.view.php";
         }
         else
         {
-            $frontendController = new FrontendController();
-            $frontendController->getPageHome();
+            $this->frontendController->getPageHome();
         }
     }
 
@@ -44,8 +56,7 @@ class BackendController
      */
     public function getPageLogin()
     {
-        $userController = new UserController();
-        $userController->getPageLogin();
+        $this->userController->getPageLogin();
     }
 
     /**
@@ -53,8 +64,7 @@ class BackendController
      */
     public function getPageRegister()
     {
-        $userController = new UserController();
-        $userController->getPageRegister();
+        $this->userController->getPageRegister();
     }
 
     /**
@@ -62,8 +72,7 @@ class BackendController
      */
     function getPageLogout()
     {
-        $userController = new UserController();
-        $userController->getPageLogout();
+        $this->userController->getPageLogout();
     }
 
     /**
@@ -71,8 +80,8 @@ class BackendController
      */
     function getPageLibrary()
     {
-        $noteController = new NoteController();
-        $noteController->getPageLibrary();
+        // $noteController = new NoteController();
+        $this->noteController->getPageLibrary();
     }
 
     /**
@@ -80,8 +89,8 @@ class BackendController
      */
     function getPageAddImage()
     {
-        $noteController = new NoteController();
-        $noteController->getPageAddImage();
+        // $noteController = new NoteController();
+        $this->categoryController->getPageAddImage();
     }
 
     /**
@@ -89,8 +98,47 @@ class BackendController
      */
     function getPageDeleteImage()
     {
-        $noteController = new NoteController();
-        $noteController->getPageDeleteImage();
+        $this->categoryController->getPageDeleteImage();
+    }
+    
+    /**
+     * DISPLAY CATEGORY
+    */
+    function getPageCategory()
+    {
+        $this->categoryController->getPageCategory();
+    }
+
+    /**
+     * DISPLAY ALL CATEGORIES
+     */
+    function getPageCategories()
+    {
+        $this->categoryController->getPageCategories();
+    }
+
+    /**
+     * ADD CATEGORY
+     */
+    function getPageAddCategory()
+    {
+        $this->categoryController->getPageAddCategory();
+    }
+
+    /**
+     * EDIT CATEGORY
+     */
+    function getPageEditCategory()
+    {
+        $this->categoryController->getPageEditCategory();
+    }
+
+    /**
+     * DELETE CATEGORY
+     */
+    function getPageDeleteCategory()
+    {
+        $this->categoryController->getPageDeleteCategory();
     }
 }
 

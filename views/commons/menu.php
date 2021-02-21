@@ -15,7 +15,7 @@ if((isset($_SESSION['user']) && !empty($_SESSION['user'])))
       </div>
     </li>
     <li class="nav-item col-12 col-lg-3 px-1">
-      <a class="nav-link text-info border-left border-bottom border-info" href="<?= URL ?>category">Mes notes</a>
+      <a class="nav-link text-info border-left border-bottom border-info" href="<?= URL ?>categories">Mes notes</a>
     </li>
   </ul>
 </nav>

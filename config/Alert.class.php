@@ -2,30 +2,20 @@
 
 class Alert 
 {
-    public static function setAlert($message)
+    public static function setAlert($alert)
     {
-        if(isset($message) && !empty ($message))
+        if(isset($alert['msg']) && !empty ($alert['msg']))
         {
-            $_SESSION['alert'] = $message;
+            $_SESSION['alert']['msg'] = $alert['msg'];
         }
-    }
-
-    public static function setAlertType($type)
-    {
-        if(isset($type) && !empty ($mestypesage))
+        if(isset($alert['type']) && !empty ($alert['type']))
         {
-            $_SESSION['alert_type'] = $type;
+            $_SESSION['alert']['type'] = $alert['type'];
         }
     }
 
     public static function getAlert()
     {
         return $_SESSION['alert'];
-    }
-
-    public static function getAlertType()
-    {
-        return $_SESSION['alert_type'];
-    }
-    
+    }    
 }

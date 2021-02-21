@@ -2,7 +2,6 @@
 require_once "models/pdo.php";
 
 
-
 function getIfEmailExist($email){
     $bdd = connexionPDO();
     $req = '

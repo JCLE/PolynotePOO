@@ -1,15 +1,4 @@
 <?php
-// require_once "public/useful/formatting.php";
-// require_once "models/user.dao.php";
-// require_once "models/note.dao.php";
-// require_once "models/category.dao.php";
-// require_once "models/image.dao.php";
-// require_once "public/useful/MyBreadcrumb.php"; 
-// require_once "public/useful/imgManager.php";
-// require_once "public/useful/alertManager.php";
-// require_once "models/image.dao.php";
-// require_once "models/admin.dao.php";
-// require_once "config/config.php";
 
 class UserController
 {
@@ -19,11 +8,10 @@ class UserController
     public function getPageLogin()
     {
         $alert = Security::checkAlert();
-        // $menu_state = MENU_STATE_INITIAL; // TODO : refactoriser menu
         $title = "Page de connexion";
         $description = "Page permettant l'authentification";
 
-        // Already logged in
+        // If already logged in
         if(Security::checkAccess())
         {
             Security::generateCookiePassword();

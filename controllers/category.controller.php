@@ -1,28 +1,121 @@
 <?php
-require_once "public/useful/formatting.php";
-require_once "models/user.dao.php";
-require_once "models/note.dao.php";
-require_once "models/category.dao.php";
-require_once "models/image.dao.php";
-require_once "public/useful/MyBreadcrumb.php"; 
-require_once "public/useful/imgManager.php";
-// require_once "public/useful/alertManager.php";
-// require_once "models/image.dao.php";
-// require_once "models/admin.dao.php";
-require_once "config/config.php";
 
 class CategoryController
 {
-    function getPageCategory()
+    function getPageAddImage()
     {
+        $alert = Security::checkAlert();
+        $title = "Ajout de d'image";
+        $description = "Page permettant l'ajout d'images'";
+
+        $MyBreadcrumb = new MyBreadcrumb();
+        $MyBreadcrumb->add('Ajout d\'images', '#');
+        $breadcrumb = $MyBreadcrumb->breadcrumb();
+
         if(Security::checkAccess())
         {
-            Security::generateCookiePassword();
+            if(!empty($_FILES))
+            {
+                try
+                {
+                    $nb_files = count($_FILES['img_file']['name']);
 
-            // $alert = getInitAlert();
-            // $alert_msg = $alert['message'];
-            // $alert_type = $alert['type'];
+                    for($i=0; $i<$nb_files; $i++)
+                    {                        
+                        $filename =  explode('.', $_FILES['img_file']['name'][$i]); 
+                        // 0-name 1-extension
+                        $name = cleanString($filename[0]);
+                        $tempName = $name;
+                        $j = 1;
+                        // if image name exists, change his name as long as needed
+                        while(getIfImageExist($tempName,$_SESSION['user']['id']) > 0)
+                        {
+                            $tempName = $name.$j;
+                            $j++;
+                        }
+                        $fileImage['name'] = $_FILES['img_file']['name'][$i];
+                        $fileImage['type'] = $_FILES['img_file']['type'][$i];
+                        $fileImage['tmp_name'] = $_FILES['img_file']['tmp_name'][$i];
+                        $fileImage['error'] = $_FILES['img_file']['error'][$i];
+                        $fileImage['size'] = $_FILES['img_file']['size'][$i];
 
+                        // create folder if not exist
+                        $dir = "public/sources/images/images";
+                        if(!file_exists($dir)) mkdir($dir,0777);
+                        $directory = $dir."/user".$_SESSION['user']['id']."/";
+                        
+                        $tmp_name_img = cleanString($tempName);
+                        $imgName = addImg($fileImage, $directory,$tmp_name_img);
+                        
+                        $description = "Image representant ".$name;
+                        $id_image =  insertImageIntoBD($tempName, $imgName, $description, $_SESSION['user']['id']);
+                        }
+                }
+                catch(Exception $e)
+                {
+                    throw new Exception("Erreur lors de l'insertion de l'image");
+                }
+
+                if($nb_files > 1)
+                    $alert['msg'] = "Les images ont été ajoutées";
+                else
+                    $alert['msg']  = "L'image \"".$filename[0]."\" a été ajoutée";
+
+                $alert['type'] = ALERT_SUCCESS;
+                Alert::setAlert($alert);
+                header ('Location: library');
+                return;
+            }
+            require_once "views/back/images/addImage.view.php";
+        }
+        else 
+        {
+            throw new Exception("Acces interdit si vous n'êtes pas authentifié");
+        }
+    }
+
+
+    function getPageDeleteImage()
+    {
+        $alert = Security::checkAlert();
+        $title = "Supprimer image";
+        $description = "Page de suppression d'image";
+
+        if(isset($_GET['del']))
+        {
+            $id_image = Security::secureHTML($_GET['del']);
+            
+            try
+            {
+                $image = getImageFromID($id_image, $_SESSION['user']['id']);
+                if(deleteImage($id_image,$_SESSION['user']['id'])<1)
+                {
+                    throw new Exception ("Aucune image supprimée");
+                }
+                $url = "public/sources/images/images/user".$_SESSION['user']['id']."/".$image['url'];
+                deleteFile($url);
+                $alert['msg'] = "La suppression de l'image est effective";
+                $alert['type'] = ALERT_WARNING;
+            } catch(Exception $e){
+                $alert['msg'] = "La suppression de l'image n'a pas fonctionné";
+                $alert['type'] = ALERT_DANGER;
+            }
+            Alert::setAlert($alert);
+        }
+        header ('Location: library');
+    }
+
+
+    function getPageCategory()
+    {
+        $alert = Security::checkAlert();
+        // var_dump($alert);
+        // return;
+        $title = "Page des notes";
+        $description = "Page regroupant toutes vos notes pour une catégorie";
+        
+        if(Security::checkAccess())
+        {        
             if(isset($_GET['id']) && !empty($_GET['id']))
             {
                 $id_category = Security::secureHTML($_GET['id']);
@@ -34,19 +127,18 @@ class CategoryController
             try
             {
                 $id_user = $_SESSION['user']['id'];
-                $page = (!empty($_GET['page']) ? Security::secureHTML($_GET['page']) : 1);
-
-                $nb_max_pages = getNbPagesFromCategory($page, $id_category, $id_user);
-                $notes = getNotesFromCategory($page, $id_category, $id_user);
+                $pageNum = (!empty($_GET['pageNum']) ? Security::secureHTML($_GET['pageNum']) : 1);
+                $nb_max_pages = getNbPagesFromCategory($pageNum, $id_category, $id_user);
+                $notes = getNotesFromCategory($pageNum, $id_category, $id_user);
                 $category = getCategoryFromID($id_category, $id_user);     
-
+                
                 // Replace [Library] by <img> in BDD
                 $i = 1;
                 foreach( $notes as $key => $note )
                 {
                     $matches = findImgID($note['content']);
                     $nbMatches = count($matches); 
-
+                    
                     if($nbMatches  > 0)
                     {
                         for($i=0; $i<$nbMatches; $i++ )
@@ -59,7 +151,7 @@ class CategoryController
                     }
                     $i++;
                 }      
-
+                
                 if($category === false)
                 {
                     throw new Exception();
@@ -69,16 +161,12 @@ class CategoryController
             {
                 throw new Exception("Une erreure est survenue lors de la récupération des notes");
             }
-
-            $title = "Page des notes";
-            $description = "Page regroupant toutes vos notes";
-            $menu_state = MENU_STATE_BREADCRUMB;
+                  
             $MyBreadcrumb = new MyBreadcrumb();
             $MyBreadcrumb->add('Notes', 'categories');
             $MyBreadcrumb->add($category['name'], '');      
             $breadcrumb = $MyBreadcrumb->breadcrumb();
-
-            require_once "views/back/notes/category.view.php";
+            require_once "views/back/categories/category.view.php";
         } 
         else 
         {
@@ -89,135 +177,120 @@ class CategoryController
 
     function getPageCategories()
     {
+        $alert = Security::checkAlert();
+        $title = "Page des notes";
+        $description = "Page regroupant toutes vos notes par categories";
+
+        $MyBreadcrumb = new MyBreadcrumb();
+        $MyBreadcrumb->add('Notes', '');        
+        $breadcrumb = $MyBreadcrumb->breadcrumb();
+
         if(Security::checkAccess())
-        {
-            Security::generateCookiePassword();
-            $title = "Page des notes";
-            $description = "Page regroupant toutes vos notes par categories";
-            $menu_state = MENU_STATE_BREADCRUMB;
-            $MyBreadcrumb = new MyBreadcrumb();
-            $MyBreadcrumb->add('Notes', '');        
-            $breadcrumb = $MyBreadcrumb->breadcrumb();
-
-            // $alert = getInitAlert();
-            // $alert_msg = $alert['message'];
-            // $alert_type = $alert['type'];
-
+        {    
             $categories = array();
             if(getIfCategoriesExist($_SESSION['user']['id']))
             {
                 $categories = getCategories($_SESSION['user']['id']);
             }
-            // var_dump($_SESSION['user']['id']);
-            // var_dump(getIfCategoriesExist($_SESSION['user']['id']));
-            // var_dump($categories[0]);
-            require_once "views/back/notes/categories.view.php";
+            require_once "views/back/categories/categories.view.php";
         } 
         else 
         {
-            throw new Exception("Acces interdit si vous n'êtes pas authentifié");
+            throw new Exception("Accès interdit si vous n'êtes pas authentifié");
         }
     }
 
+
     function getPageAddCategory()
     {
+        $alert = Security::checkAlert();
         $title = "Ajout de catégorie";
         $description = "Page permettant l'ajout de categories";
-        $menu_state = MENU_STATE_BREADCRUMB;
+
         $MyBreadcrumb = new MyBreadcrumb();
         $MyBreadcrumb->add('Notes', 'categories');
         $MyBreadcrumb->add('Ajout Catégorie', '#');
         $breadcrumb = $MyBreadcrumb->breadcrumb();
 
-        // $alert = getInitAlert();
-        // $alert_msg = $alert['message'];
-        // $alert_type = $alert['type'];
-
-        // if(Security::checkAccess())
-        // {
-        //     Security::generateCookiePassword();
-
-            if(!empty($_FILES) &&
-            isset($_POST['category_name']) && !empty($_POST['category_name']))
+        if(Security::checkAccess())
+        {
+            if(isset($_FILES) && isset($_POST['category_name']) && !empty($_POST['category_name']))
             {
                 $name_category = Security::secureHTML($_POST['category_name']);
 
-                try
-                {
-                    $fileImage = $_FILES['img_file'];
-                    // print_r($fileImage);
-                    // return;
-                    $dir = "public/sources/images/icons";
-                    // create folder if not exist
-                    if(!file_exists($dir)) mkdir($dir,0777);
-                    $directory = $dir."/user".$_SESSION['user']['id']."/";
-                    $tmp_name_category = cleanString($name_category);
-                    $imgName = addImg($fileImage, $directory,$tmp_name_category);
-                    image_resize($directory.$imgName,$directory.$imgName,50,50);
-                }
-                catch(Exception $e)
-                {
-                    throw new Exception("L'insertion en BD n'a pas fonctionné");
-                }
                 if(!getIfCategoryExist($name_category, $_SESSION['user']['id']))
                 {
+                    try // Insert Img file
+                    {
+                        $fileImage = $_FILES['img_file'];
+                        $dir = "public/sources/images/icons";
+                        // create folder if not exist
+                        if(!file_exists($dir)) mkdir($dir,0777);
+                        $directory = $dir."/user".$_SESSION['user']['id']."/";
+                        $tmp_name_category = cleanString($name_category);
+                        $imgName = addImg($fileImage, $directory,$tmp_name_category);
+                        image_resize($directory.$imgName,$directory.$imgName,50,50);
+                    }
+                    catch(Exception $e)
+                    {
+                        throw new Exception("Une erreur s'est produite pendant l'insertion du fichier");
+                    }
+                    // Insert category into BDD
                     $description = "Image representant la catégorie ".$name_category;
                     $id_image =  insertImageIntoBD($name_category, $imgName, $description, $_SESSION['user']['id']);
                     $id_category = insertCategoryIntoBD($name_category, $id_image, $_SESSION['user']['id']);
                 }
                 else
                 {
-                    throw new Exception("Cette catégorie existe déja apparement");
+                    $alert['msg'] = "La catégorie \"".$name_category."\" existe déjà";
+                    $alert['type'] = ALERT_WARNING;
+                    $_FILES = null;
+                    require_once "views/back/categories/addCategory.view.php";
+                    return;
                 }
-
-                $alert_msg = "La catégorie ".$name_category." a été ajoutée";
-                $alert_type = ALERT_SUCCESS;
-
-                $_SESSION['alert_msg'] = $alert_msg;
-                $_SESSION['alert_type'] = $alert_type;
-
+                $alert['msg'] = "La catégorie \"".$name_category."\" a été ajoutée";
+                $alert['type'] = ALERT_SUCCESS;
+                Alert::setAlert($alert);
                 header ('Location: category&id='.$id_category);
-                // getPageCategory($id_category, $alert_msg, $alert_type);
+                return;
             }
             else
             {
                 if(!empty($_POST))
-                {           
-                    // TODO : erreur pour chaque champs
-                    $alert_msg = "Erreur lors de l'ajout";
-                    $alert_type = ALERT_DANGER;
-
-                    $_SESSION['alert_msg'] = $alert_msg;
-                    $_SESSION['alert_type'] = $alert_type;
+                {   
+                    if(!$_POST['category_name'])
+                    {
+                        $alert['msg'] = "Le nom de la catégorie ne peut être vide";
+                        $alert['type'] = ALERT_DANGER;
+                    }   
+                    else
+                    {
+                        $alert['msg'] = "Une erreur inattendue s'est produite";
+                        $alert['type'] = ALERT_DANGER;
+                    }
                 }
             }
-
-
-            require_once "views/back/notes/addCategory.view.php";
-        // }
-        // else 
-        // {
-        //     throw new Exception("Acces interdit si vous n'êtes pas authentifié");
-        // }
+            require_once "views/back/categories/addCategory.view.php";
+        }
+        else 
+        {
+            throw new Exception("Acces interdit si vous n'êtes pas authentifié");
+        }
     }
 
     function getPageEditCategory()
     {
+        $alert = Security::checkAlert();
         $title = "Edition de catégorie";
         $description = "Page permettant l'édition de categories";
-        $menu_state = MENU_STATE_BREADCRUMB;
+
         $MyBreadcrumb = new MyBreadcrumb();
         $MyBreadcrumb->add('Notes', 'categories');
         $MyBreadcrumb->add('Edition Catégorie', '#');
         $breadcrumb = $MyBreadcrumb->breadcrumb();
-
         
-        if(Security::checkAccessSession())
+        if(Security::checkAccess())
         {
-            // Security::generateCookiePassword();
-            // $alert = getInitAlert();
-            // $alert_msg = $alert['message'];
-            // $alert_type = $alert['type'];
 
             if( isset($_GET['id']) && !empty($_GET['id']))
             {
@@ -229,11 +302,6 @@ class CategoryController
                 throw new Exception("Identifiant non reconnu");
             }
 
-            // var_dump('<pre>');
-            // var_dump($_POST['category_name']);
-            // var_dump($_FILES['img_file']);
-            // var_dump('</pre>');
-
             if(isset($_POST['category_name']) && !empty($_POST['category_name']))
             {
                 
@@ -244,13 +312,11 @@ class CategoryController
 
                     if(isset($_FILES['img_file']['size']) && empty($_FILES['img_file']['size']))
                     {
-                        $alert_msg = "Catégorie modifiée avec succes";
-                        $alert_type = ALERT_SUCCESS;
-        
-                        $_SESSION['alert_msg'] = $alert_msg;
-                        $_SESSION['alert_type'] = $alert_type;
-        
+                        $alert['msg'] = "Catégorie modifiée avec succes";
+                        $alert['type'] = ALERT_SUCCESS;        
+                        Alert::setAlert($alert);        
                         header ('Location: category&id='.$id_category);
+                        return;
                     }
                 }
                 else
@@ -264,25 +330,22 @@ class CategoryController
             }
 
             if(isset($_FILES['img_file']['size']) && !empty($_FILES['img_file']['size']))
-            {
-                try
+            {                try
                 {
+                    // Get old image reference
                     $oldimage = getImageFromCategory($id_category, $_SESSION['user']['id']);
 
-                    // add and resize new icon in FOLDER
                     $fileImage = $_FILES['img_file'];
-                    $dir = "public/sources/images/icons";
+                    $dir = IMG_DIRECTORY."icons";
                     // create folder if not exist
                     if(!file_exists($dir)) mkdir($dir,0777);
                     $directory = $dir."/user".$_SESSION['user']['id']."/";
-                    $filename =  explode('.', $fileImage['name']); // 0-name 1-extension
-                    $filename_category = cleanString($filename[0]);
-                    $imgName = addImg($fileImage, $directory,$filename_category);
+                    $tmp_name_category = cleanString($name_category);
+                    $imgName = addImg($fileImage, $directory,$tmp_name_category);
                     image_resize($directory.$imgName,$directory.$imgName,50,50);
 
-                    // Add new icon in BDD
                     $description = "Image representant la catégorie ".$name_category;
-                    $id_image =  insertImageIntoBD($filename_category, $fileImage['name'], $description, $_SESSION['user']['id']);
+                    $id_image =  insertImageIntoBD($name_category, $imgName, $description, $_SESSION['user']['id']);
 
                     // Add new image to Category in BDD
                     $updated = updateCategoryImage($id_category, $id_image, $_SESSION['user']['id']);
@@ -300,28 +363,25 @@ class CategoryController
                     throw new Exception("L'insertion en BD n'a pas fonctionné");
                 }
 
-                $alert_msg = "Catégorie modifiée avec succes";
-                $alert_type = ALERT_SUCCESS;
-
-                $_SESSION['alert_msg'] = $alert_msg;
-                $_SESSION['alert_type'] = $alert_type;
-
+                $alert['msg'] = "Catégorie modifiée avec succès";
+                $alert['type'] = ALERT_SUCCESS;
+                Alert::setAlert($alert);
+                // var_dump($alert);
+                // return;
                 header ('Location: category&id='.$id_category);
+                return;
             }
             else
             {
                 if( isset($_POST['category_name']) && empty($_POST['category_name']))
                 {           
                     // TODO : erreur pour chaque champs
-                    $alert_msg = "La categorie ne peut rester vide";
-                    $alert_type = ALERT_DANGER;
-
-                    $_SESSION['alert_msg'] = $alert_msg;
-                    $_SESSION['alert_type'] = $alert_type;
+                    $alert['msg'] = "La categorie ne peut rester vide";
+                    $alert['type'] = ALERT_DANGER;
+                    Alert::setAlert($alert);
                 }
             }
-
-            require_once "views/back/notes/editCategory.view.php";
+            require_once "views/back/categories/editCategory.view.php";
         }
         else
         {
@@ -331,13 +391,9 @@ class CategoryController
 
     function getPageDeleteCategory()
     {
+        $alert = Security::checkAlert();
         $title = "Supprimer notes";
         $description = "Page de suppression de notes";
-
-        // $alert = getInitAlert();
-        // $alert_msg = $alert['message'];
-        // $alert_type = $alert['type'];
-
 
         if(isset($_GET['del']))
         {
@@ -353,20 +409,17 @@ class CategoryController
                 // return;
                 $url = "public/sources/images/icons/user".$_SESSION['user']['id']."/".$image['url'];
                 deleteFile($url);
-                $alert_msg = "La suppression de la catégorie est effective";
-                $alert_type = ALERT_WARNING;
+                $alert['msg'] = "La suppression de la catégorie est effective";
+                $alert['type'] = ALERT_WARNING;
             } 
             catch(Exception $e)
             {
-                $alert_msg = "La suppression de la catégorie n'a pas fonctionnée";
-                $alert_type = ALERT_DANGER;
+                $alert['msg'] = "La suppression de la catégorie n'a pas fonctionnée";
+                $alert['type'] = ALERT_DANGER;
             }
-            $_SESSION['alert_msg'] = $alert_msg;
-            $_SESSION['alert_type'] = $alert_type;
+            Alert::setAlert($alert);
         }
-        // getPageCategories($alert_msg,$alert_type);
-        header ('Location: categories');
-        
+        header ('Location: categories');       
 
     }
 
