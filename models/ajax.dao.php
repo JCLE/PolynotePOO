@@ -4,7 +4,6 @@ require_once "models/pdo.php";
 /**     *****************
  *      ****** GET ******
  */
-
 function getSearch($search,$id_user){
     $bdd = connexionPDO();
     $stmt = $bdd->prepare('

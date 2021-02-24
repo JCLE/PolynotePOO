@@ -18,7 +18,6 @@ function getCallAjax($_search)
 {
     if(Security::checkAccess())
     {
-        Security::generateCookiePassword();
         $search = Security::secureHTML($_search);
 
         // cut string into array and delete empty slots with array_filter
@@ -30,7 +29,7 @@ function getCallAjax($_search)
         foreach($result as $key => $value)
         {
             $wordSearch = getSearch($value, $_SESSION['user']['id']);
-            return $wordSearch;
+            // return $wordSearch;
             $reqArray = array_merge($wordSearch, $reqArray);
         }
 
@@ -73,7 +72,7 @@ function getInsertImageAjax($file)
             }
             $fileImage = $file;
 
-            $dir = "public/sources/images/images";
+            $dir = USER_DIRECTORY."images";
             // Create directory images if not exist
             if(!file_exists($dir)) mkdir($dir,0777);
             $directory = $dir."/user".$_SESSION['user']['id']."/";

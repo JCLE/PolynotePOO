@@ -42,14 +42,14 @@ foreach( $notes as $note ) : ?>
 <!-- paging -->
 <div class="row justify-content-center">
     <?php 
-        $nb_pages = ceil($nb_max_pages / LIMIT_NOTES_BY_PAGE);
-        // print_r('page : '.$page.' --  nbpages : '.$nb_max_pages);
+        $nb_pages = ceil($ResultNumber / LIMIT_NOTES_BY_PAGE);
+        // print_r('page : '.$page.' --  nbpages : '.$ResultNumber);
 
         /* Si on est sur la première page, on n'a pas besoin d'afficher de lien
         * vers la précédente. On va donc l'afficher que si on est sur une autre
         * page que la première */
         if ($pageNum > 1):
-            ?><a tabindex=10 class="text-decoration-none" href="category&id=<?= $category['id_category'] ?>&page=<?php echo $pageNum - 1; ?>">Page précédente</a><?php
+            ?><a tabindex=10 class="text-decoration-none" href="category&id=<?= $category['id_category'] ?>&pageNum=<?php echo $pageNum - 1; ?>">Page précédente</a><?php
         endif;
 
         if($nb_pages > 1)

@@ -1,7 +1,6 @@
 
 const AJAX_URL = 'imgAjax.php';
 
-
 $(document).ready(function() 
 {
 
@@ -31,20 +30,9 @@ $(document).ready(function()
                 +' <button type="button" class="col-12 p-0 mb-1"'
                 +' onclick="addTagImg('+ data['id_image'] +', \'#content\')">'
                 +' <img class="img-thumbnail align-self-center" '
-                +' src="public/sources/images/images/user'+ data['id_user'] +'/'+ data['url'] +'"'
+                +' src="public/sources/users/images/user'+ data['id_user'] +'/'+ data['url'] +'"'
                 +' alt="'+ data['desc'] +'"/></button></div>');
             }
-            // error: function(xhr, status, error){
-            //     console.log("xhr : "+xhr+" status : "+status+" error : "+error);
-            // },
-            // complete: function(xhr, status){
-            //     console.log("xhr : "+xhr+" status : "+status);
-            // },
-            // statusCode : {
-            //     404 : function (){
-            //         console.log("Erreur 404");
-            //     }
-            // }
           });
 
     });

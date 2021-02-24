@@ -4,13 +4,11 @@ require_once "controllers/backend.controller.php";
 require_once "controllers/frontend.controller.php";
 require_once "config/Security.class.php";
 
-// **************** DEVELOPMENT ENVIRONMENT ONLY ****************
-require_once "controllers/development.controller.php";
-
 $backendController = new BackendController();
 $frontendController = new FrontendController();
 try
 {
+
     if(empty($_GET['page']))
     {
         $frontendController->getPageHome();
@@ -28,6 +26,8 @@ try
             break;
             case "logout" : $backendController->getPageLogout();
             break;
+            case "search": $backendController->getPageSearch();
+            break;
             case "library" : $backendController->getPageLibrary();
             break;
             case "addimage" : $backendController->getPageAddImage();
@@ -44,7 +44,27 @@ try
             break;
             case "deletecategory" : $backendController->getPageDeleteCategory();
             break;
-            default : throw new Exception("La page n'existe pas");
+            case "note" : $backendController->getPageNote();
+            break;
+            case "addnote" : $backendController->getPageAddNote();
+            break;
+            case "editnote" : $backendController->getPageEditNote();
+            break;
+            case "deletenote" : $backendController->getPageDeleteNote();
+            break;
+            case "error301": 
+            case "error302": 
+            case "error400": 
+            case "error401": 
+            case "error402": 
+            case "error405": 
+            case "error500": 
+            case "error505": throw new Exception("Erreur de type : "+$url);
+            break;
+            case "error403": throw new Exception("vous n'avez pas le droit d'accéder à ce dossier");
+            break;
+            case "error404":
+            default: throw new Exception("La page n'existe pas");
         }
     }
 }

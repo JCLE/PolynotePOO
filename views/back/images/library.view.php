@@ -43,8 +43,7 @@ if(empty($images))
 </div>
 
 
-
 <?php
 $content = ob_get_clean();
-require "views/commons/template.php"
+require "views/commons/template.php" 
 ?>

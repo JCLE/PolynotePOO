@@ -1,5 +1,7 @@
 <?php
 require_once "public/useful/formatting.php";
+/*                          *************   Changer l'emplacement des DAO  *************   */
+// Pourquoi pas dans les classes correspondantes user dans controller user, etc...
 require_once "models/user.dao.php";
 require_once "models/note.dao.php";
 require_once "models/category.dao.php";
@@ -9,6 +11,7 @@ require_once "public/useful/imgManager.php";
 require_once "controllers/user.controller.php";
 require_once "controllers/frontend.controller.php";
 require_once "controllers/category.controller.php";
+require_once "controllers/library.controller.php";
 require_once "controllers/note.controller.php";
 
 // require_once "public/useful/alertManager.php";
@@ -32,10 +35,13 @@ class BackendController
         $this->userController = new UserController();
         $this->frontendController = new FrontendController();
         $this->categoryController = new CategoryController();
+        $this->libraryController = new LibraryController();
     }
-
+ 
     /**
-     * HOME PAGE LOGGED
+     * getPageHome
+     *
+     * @return void
      */
     public function getPageHome()
     {
@@ -51,94 +57,133 @@ class BackendController
         }
     }
 
+    
+    // ******************** USER ********************
+
+ 
     /**
-     * LOGIN PAGE
+     * getPageLogin
+     *
+     * @return void
      */
-    public function getPageLogin()
-    {
-        $this->userController->getPageLogin();
-    }
+    public function getPageLogin(){$this->userController->getPageLogin();}
 
     /**
-     * REGISTER PAGE
+     * getPageRegister
+     *
+     * @return void
      */
-    public function getPageRegister()
-    {
-        $this->userController->getPageRegister();
-    }
+    public function getPageRegister(){$this->userController->getPageRegister();}
 
     /**
-     * LOGOUT PAGE
+     * getPageLogout
+     *
+     * @return void
      */
-    function getPageLogout()
-    {
-        $this->userController->getPageLogout();
-    }
+    function getPageLogout(){$this->userController->getPageLogout();}
+
+
+
+    // ******************** LIBRARY ********************
 
     /**
-     * LIBRARY PAGE
+     * getPageLibrary
+     *
+     * @return void
      */
-    function getPageLibrary()
-    {
-        // $noteController = new NoteController();
-        $this->noteController->getPageLibrary();
-    }
+    function getPageLibrary(){$this->libraryController->getPageLibrary();}
+   
+    /**
+     * getPageAddImage
+     *
+     * @return void
+     */
+    function getPageAddImage(){$this->libraryController->getPageAddImage();}
 
     /**
-     * ADD IMAGE TO LIBRARY
+     * getPageDeleteImage
+     *
+     * @return void
      */
-    function getPageAddImage()
-    {
-        // $noteController = new NoteController();
-        $this->categoryController->getPageAddImage();
-    }
+    function getPageDeleteImage(){$this->libraryController->getPageDeleteImage();}
 
-    /**
-     * DELETE IMAGE FROM LIBRARY
-     */
-    function getPageDeleteImage()
-    {
-        $this->categoryController->getPageDeleteImage();
-    }
+
+
+    // ******************** CATEGORY ********************
     
     /**
-     * DISPLAY CATEGORY
-    */
-    function getPageCategory()
-    {
-        $this->categoryController->getPageCategory();
-    }
+     * getPageCategory
+     *
+     * @return void
+     */
+    function getPageCategory(){$this->categoryController->getPageCategory();}
 
     /**
-     * DISPLAY ALL CATEGORIES
+     * getPageCategories
+     *
+     * @return void
      */
-    function getPageCategories()
-    {
-        $this->categoryController->getPageCategories();
-    }
+    function getPageCategories(){$this->categoryController->getPageCategories();}
+ 
+    /**
+     * getPageAddCategory
+     *
+     * @return void
+     */
+    function getPageAddCategory(){$this->categoryController->getPageAddCategory();}
 
     /**
-     * ADD CATEGORY
+     * getPageEditCategory
+     *
+     * @return void
      */
-    function getPageAddCategory()
-    {
-        $this->categoryController->getPageAddCategory();
-    }
+    function getPageEditCategory(){$this->categoryController->getPageEditCategory();}
+  
+    /**
+     * getPageDeleteCategory
+     *
+     * @return void
+     */
+    function getPageDeleteCategory(){$this->categoryController->getPageDeleteCategory();}
+
+
+
+    // ******************** NOTE ********************
+   
+    /**
+     * getPageNote
+     *
+     * @return void
+     */
+    function getPageNote(){$this->noteController->getPageNote();}
 
     /**
-     * EDIT CATEGORY
+     * getPageAddNote
+     *
+     * @return void
      */
-    function getPageEditCategory()
-    {
-        $this->categoryController->getPageEditCategory();
-    }
+    function getPageAddNote(){$this->noteController->getPageAddNote();}
 
     /**
-     * DELETE CATEGORY
+     * getPageEditNote
+     *
+     * @return void
      */
-    function getPageDeleteCategory()
-    {
-        $this->categoryController->getPageDeleteCategory();
-    }
+    function getPageEditNote(){$this->noteController->getPageEditNote();}
+
+    /**
+     * getPageDeleteNote
+     *
+     * @return void
+     */
+    function getPageDeleteNote(){$this->noteController->getPageDeleteNote();}
+    
+    /**
+     * getPageSearch
+     *
+     * @return void
+     */
+    function getPageSearch(){$this->noteController->getPageSearch();}
+    
 }
 

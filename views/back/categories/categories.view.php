@@ -22,7 +22,12 @@ if(empty($categories))
 
     <div class="border col-12 col-sm-5 col-md-3 col-lg-2  text-center position-relative m-2">
         <div class="position-absolute top-right m-0 p-0">
-            <a tabindex=-1 href="deletecategory&del=<?= $category['id_category'] ?>">
+        <a tabindex=-1 onclick="javascript: 
+                if(confirm('Êtes-vous sure de vouloir supprimer la categorie <?= $category['name'] ?> ?'))
+                {
+                    window.location.href='deletecategory&del=<?= $category['id_category'] ?>';
+                }
+                "  >
                 <button type="button" class="rounded-circle" >
                     <span class="ui-icon ui-icon-trash justify-content-center"></span>
                 </button>
@@ -38,7 +43,6 @@ if(empty($categories))
 
     <?php endforeach; ?>
 </div>
-
 
 <?php
 $content = ob_get_clean();

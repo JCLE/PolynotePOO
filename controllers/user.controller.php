@@ -4,6 +4,8 @@ class UserController
 {
     /**
      * LOGIN PAGE
+     *
+     * @return void
      */
     public function getPageLogin()
     {
@@ -48,24 +50,32 @@ class UserController
 
     /**
      * LOGOUT PAGE
+     *
+     * @return void
      */
     public function getPageLogout()
     {
         unset($_SESSION['user']);
         header("Location: home");
     }
-
+  
     /**
      * CREATE COOKIE
+     *
+     * @param  mixed $pseudo
+     * @param  mixed $password
+     * @return void
      */
     private function getRememberMe($pseudo, $password)
     {
         setcookie(COOKIE_PSEUDO, $pseudo, time() + 365*24*3600, null, null, false, true);
         setcookie(COOKIE_PASSWORD, $password, time() + 365*24*3600, null, null, false, true);
     }
-
+ 
     /**
      * DELETE COOKIE
+     *
+     * @return void
      */
     private function getDeleteRememberMe()
     {
@@ -75,6 +85,8 @@ class UserController
 
     /**
      * REGISTER PAGE
+     *
+     * @return void
      */
     public function getPageRegister()
     {
@@ -147,6 +159,13 @@ class UserController
         require_once "views/back/register.view.php";
     }
 
+
+    /**
+     * Check if value is not empty and secure it
+     *
+     * @param  string $value
+     * @return string value or null
+     */
     private function checkAndSecure($value)
     {
         if( isset($value) && !empty($value) )
@@ -161,6 +180,9 @@ class UserController
 
     /**
      * Check input to valid or invalid feedback
+     *
+     * @param  string $value
+     * @return array valid, text
      */
     private function checkInput($value)
     {

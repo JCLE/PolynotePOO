@@ -233,7 +233,7 @@ function findImgID($txt)
 
 function createImgTag($image)
 {
-    $link = '<img class="img-fluid" src="public/sources/images/images/user'.
+    $link = '<img class="img-fluid" src="'.USER_DIRECTORY.'images/user'.
         $image['id_user'].'/'.$image['url'].'" alt="'.$image['description'].'"/>';
     return $link;
 }

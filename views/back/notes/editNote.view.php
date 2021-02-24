@@ -5,7 +5,7 @@ ob_start();
 <!-- Category and img -->
 <div class="row justify-content-center text-center mb-2">
     <h1 class="col-12"><?= $note["name_category"] ?></h1>
-    <img src="public/sources/images/icons/user<?= $note['id_user'] 
+    <img src="<?= USER_DIRECTORY ?>icons/user<?= $note['id_user'] 
     ?>/<?= $note['url'] ?>" alt="<?= $note['description'] ?>"/>
 </div>
 <form method="post" action="editnote">
@@ -52,7 +52,7 @@ ob_start();
 
                     <div class="border col-12 col-sm-5 col-md-3 col-lg-2 align-middle">
                         <button type="button" class="col-12 p-0 mb-1" onclick="addTagImg('<?= $image['id'] ?>', '#content')">
-                            <img class="img-thumbnail align-self-center" src="public/sources/images/images/user<?= $image['id_user'] ?>/<?= $image['url'] ?>" alt="<?= $image['description'] ?>"/>
+                            <img class="img-thumbnail align-self-center" src="<?= USER_DIRECTORY ?>images/user<?= $image['id_user'] ?>/<?= $image['url'] ?>" alt="<?= $image['description'] ?>"/>
                         </button>
                     </div>    
 

@@ -40,7 +40,8 @@ $(document).ready(function()
                     response($.map(data, function (item) {
                         // return(item); // without rename
                         return {
-                          folder : item.id_user,
+                          id_user : item.id_user,
+                          id_note : item.id,
                           link : item.url,
                           value : item.title,
                           alt : item.description,
@@ -64,15 +65,27 @@ $(document).ready(function()
             });
         },focus: function( event, ui ) {}
     })
-    //  // Auto select first element
+    
+    // Auto select first element
     .autocomplete( "option", "autoFocus", true )
+    .autocomplete({
+        // Create input in hidden div
+        select: function( event, ui ) {
+            console.dir(ui.item);
+            $("#hidden_idnote").html("<input name=\"id_note\" value=\""+ui.item.id_note+"\"/>");
+        },
+        // reset if search changing
+        focus: function( event, ui ) {
+            $("#hidden_idnote").html("");
+        }
+    })
     // Instance each elements
-    .autocomplete( "instance" )._renderItem = function( ul, item) {
-            return $( "<li>" )
-    //    .append( "<a><img src=\"/Symfony/web/"+item.icon+"\" /> " +  item.label +"</a>" )
-    .append( "<div><img alt=\""+item.alt+"\" src=\"public/sources/images/icons/user"+item.folder+"/"+item.link+"\" /> " +  item.value + "</div>")
-    .appendTo( ul );
-     };
+    .autocomplete( "instance" )._renderItem = function( ul, item) 
+    {
+        return $( "<li>" )
+        .append( "<div><img alt=\""+item.alt+"\" src=\"public/sources/users/icons/user"+item.id_user+"/"+item.link+"\" /> " +  item.value + "</div>")
+        .appendTo( ul );
+    };
 
     
     var sizeScreen = getBootstrapDeviceSize();

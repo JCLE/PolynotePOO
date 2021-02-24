@@ -3,7 +3,10 @@ $("#img_receiver").hide();
 $('#input_name').hide();
 $('#input_file').show();
 
-
+/**
+ * Change input display
+ * @param {*} input 
+ */
 function readURL(input) {
     if (input.files && input.files[0]) {
         var reader = new FileReader();

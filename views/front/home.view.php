@@ -7,6 +7,7 @@ ob_start();
     <div class="px-0 pb-2 p-md-0 offset-lg-2 col-12 col-md-9 col-lg-7">
         <input id="search" name="search" class="form-control form-control-lg" type="search" placeholder="" aria-label="recherche" autofocus autocomplete="off">
     </div>
+    <div id="hidden_idnote" hidden>Identifiant de la note sélectionnée</div>
     <button id="submit" class="btn btn-outline-info px-0 col-12 col-md-3 col-lg-1" type="submit">rechercher</button>
 </form>
 
@@ -17,6 +18,8 @@ ob_start();
         </a>
     </div>
 </div>
+
+
  <?php }
  else
  { ?>
@@ -29,13 +32,6 @@ ob_start();
 </div>
  <?php } ?>
 
-
-
-<!-- <div class="row text-center">
-    <p class="col-12 mt-4 mt-sm-0 d-sm-block d-none">Test non visible sur portable</p>
-    <br />
-</div> -->
-
 <!-- Useful to know which device is in use for javascript -->
 <!-- used by SearchManager.js with getBootstrapDeviceSize() -->
 <div id="users-device-size">
@@ -46,16 +42,9 @@ ob_start();
   <div id="xl" class=""></div>
 </div>
 
-<!-- <img src="public/sources/images/utiles/ajax-loader.gif" style="display:none;" id="img_ajax_wait" alt="chargement ajax" /> -->
-<!-- <div id="retour" class="text-center">retour</div> -->
-
-
 <script src="public/js/searchManager.js"></script>
 
 <?php
 $content = ob_get_clean();
-// $menu_state = MENU_STATE_INITIAL; // TODO : refactoriser menu
-// $title = "Page d'accueil";
-// $description = "Bienvenue sur Polynote";
 require "views/commons/template.php"
 ?>

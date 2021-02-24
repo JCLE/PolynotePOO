@@ -27,32 +27,38 @@ function getSearch($search,$id_user){
     return $notes;
 }
 
-function getNbPagesFromCategory($page, $id_category, $id_user)
-{
-    $start_page = ($page - 1) * LIMIT_NOTES_BY_PAGE;
-    $bdd = connexionPDO();
-    $req = '
-    SELECT SQL_CALC_FOUND_ROWS * 
-    FROM note 
-    WHERE id_category = :id_category
-    AND id_user = :id_user
-    LIMIT :limit 
-    OFFSET :start_page
-    ';
-    $stmt = $bdd->prepare($req);
-    $stmt->bindValue(":id_category",$id_category,PDO::PARAM_INT);
-    $stmt->bindValue(":start_page",$start_page,PDO::PARAM_INT);
-    $stmt->bindValue(":limit",LIMIT_NOTES_BY_PAGE,PDO::PARAM_INT);
-    $stmt->bindValue(":id_user",$id_user,PDO::PARAM_INT);
-    $stmt->execute();
+// function getResultNumberFromSearch($page, $search, $id_user)
+// {
+//     $start_page = ($page - 1) * LIMIT_NOTES_BY_PAGE;
+//     $bdd = connexionPDO();
+//     $stmt = $bdd->prepare('
+//     SELECT SQL_CALC_FOUND_ROWS * 
+//     FROM note n
+//     INNER JOIN category c on n.id_category = c.id
+//     INNER JOIN image i on c.id_image = i.id
+//     WHERE n.id_user = :id_user
+//     AND (
+//     title LIKE :research
+//     OR content LIKE :research
+//     OR tags LIKE :research
+//     OR c.name LIKE :research
+//     )
+//     LIMIT :limit 
+//     OFFSET :start_page');
+//     $stmt->bindValue(":search",$search,PDO::PARAM_STR);
+//     $stmt->bindValue(":research",'%'.$search.'%',PDO::PARAM_STR);
+//     $stmt->bindValue(":id_user",$id_user,PDO::PARAM_INT);
+//     $stmt->bindValue(":limit",LIMIT_NOTES_BY_PAGE,PDO::PARAM_INT);
+//     $stmt->bindValue(":start_page",$start_page,PDO::PARAM_INT);
+//     $stmt->execute();
     
-    $resultFoundRows = $bdd->query('
-    SELECT found_rows()
-    ');
+//     $resultFoundRows = $bdd->query('
+//     SELECT found_rows()
+//     ');
     
-    $totalNumberNotes = $resultFoundRows->fetchColumn();
-    return $totalNumberNotes;
-}
+//     $totalNumberNotes = $resultFoundRows->fetchColumn();
+//     return $totalNumberNotes;
+// }
 
 function getNoteFromID($id_note, $id_user)
 {

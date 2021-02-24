@@ -25,7 +25,12 @@ ob_start();
                         <span class="ui-icon ui-icon-pencil"></span>
                     </button>
                 </a>
-                <a class="m-1" tabindex=-1 href="deletenote&del=<?= $note['id'] ?>">
+                <a class="m-1" tabindex=-1 onclick="javascript: 
+                if(confirm('Êtes-vous sure de vouloir supprimer la note : <?= $note['title'] ?> ?'))
+                {
+                    window.location.href='deletenote&del=<?= $note['id'] ?>';
+                }
+                "  >
                     <button type="button" class="rounded-circle" >
                         <span class="ui-icon ui-icon-trash"></span>
                     </button>
@@ -34,7 +39,7 @@ ob_start();
             <!-- Category Image and Name -->
             <div class="d-sm-block d-none"></div>
                 <div>
-                    <img class="" src="public/sources/images/icons/user<?= $note['id_user'] ?>/<?= $note['url'] ?>" alt="<?= $note['description'] ?>"/>
+                    <img class="" src="<?= USER_DIRECTORY ?>icons/user<?= $note['id_user'] ?>/<?= $note['url'] ?>" alt="<?= $note['description'] ?>"/>
                 </div>
                 <?= $note['name_category'] ?>
         </div>

@@ -12,9 +12,8 @@ function getPageDeleteAll()
 {
     $stmt = deleteAll();
 
-    $folder = 'public/sources/images/';
-    deleteDirectory($folder.'icons');
-    deleteDirectory($folder.'images');
+    deleteDirectory(USER_DIRECTORY.'icons');
+    deleteDirectory(USER_DIRECTORY.'images');
 
     $alert_msg = "Suppression de toutes les données";
     $alert_type= ALERT_DANGER;
